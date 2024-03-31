@@ -6,10 +6,11 @@ class PostsController < ApplicationController
   before_action :authorize_user, except: [:index, :new, :create, :generate_report]
 
   def index
+    @user_posts = current_user.posts
     if current_user.admin?
       @posts = Post.where(status: :pending) # Администраторы видят только посты на проверке
     else
-      @posts = current_user.posts # Обычные пользователи видят только свои посты
+      @posts = Post.where(status: :approved)
     end
     filter_posts
   end
@@ -101,6 +102,5 @@ class PostsController < ApplicationController
 
   def filter_posts
     @posts = @posts.where(region: params[:region]) if params[:region].present?
-    @posts = @posts.where(created_at: params[:start_date]..params[:end_date]) if params[:start_date].present? && params[:end_date].present?
   end
 end

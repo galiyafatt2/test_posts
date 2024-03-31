@@ -13,3 +13,33 @@ User.create!(
   name: 'Admin User',
   role: 'admin'
 )
+
+User.create!(
+  email: 'user1@example.com',
+  password: 'password',
+  role: 'user',
+  region: 'Region 1'
+)
+
+User.create!(
+  email: 'user2@example.com',
+  password: 'password',
+  role: 'user',
+  region: 'Region 2'
+)
+
+# Определяем статусы
+statuses = %w[draft pending approved rejected]
+
+# Для каждого пользователя создаем посты с разными статусами
+User.all.each do |user|
+  statuses.each do |status|
+    Post.create!(
+      title: "Post with status #{status}",
+      content: "Content for post with status #{status}",
+      status: status,
+      user_id: user.id,
+      region: user.region
+    )
+  end
+end

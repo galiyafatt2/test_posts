@@ -10,22 +10,7 @@
 <%= form_tag(posts_path, method: :get) do %>
   <div class="field">
     <%= label_tag :region, "Region:" %>
-    <%= select_tag :region, options_for_select(['Region 1', 'Region 2', 'Region 3']), include_blank: true %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :author, "Author:" %>
-    <%= text_field_tag :author %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :start_date, "Start Date:" %>
-    <%= date_field_tag :start_date %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :end_date, "End Date:" %>
-    <%= date_field_tag :end_date %>
+    <%= select_tag :region, options_for_select(Post.distinct.pluck(:region)), include_blank: true %>
   </div>
 
   <%= submit_tag "Filter" %>
@@ -53,13 +38,17 @@
     <% end %>
   <% end %>
 <% else %>
-  <% @posts.each do |post| %>
+  <% @user_posts.each do |post| %>
     <% if post.draft? %>
       <p><%= post.content %> - <strong>Draft</strong></p>
       <%= button_to 'Edit', edit_post_path(post) %>
       <%= button_to 'Delete', post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %>
       <%= button_to 'Submit for Review', submit_for_review_post_path(post), method: :put %>
     <% end %>
+  <% end %>
+
+  <% @posts.each do |post| %>
+    <p><%= post.content %> - <%= post.user.name %>, <strong><%= post.region %></strong></p>
   <% end %>
 <% end %>
 
