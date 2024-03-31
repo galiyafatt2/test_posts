@@ -1,0 +1,18 @@
+<h2><%= @post.title %></h2>
+<p><%= @post.content %></p>
+<p>Region: <%= @post.region %></p>
+
+<% if @post.attachments.present? %>
+  <h3>Attachments:</h3>
+  <ul>
+    <% @post.attachments.each do |attachment| %>
+      <%=  %>
+      <li><%= link_to attachment.file.url, target: "_blank" do %>
+          <%= attachment.file.identifier %>
+        <% end %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>

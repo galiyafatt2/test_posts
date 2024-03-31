@@ -1,0 +1,20 @@
+<%= form_with(model: @post, url: posts_path, method: :post, multipart: true) do |form| %>
+  <%= form.label :title %>
+  <%= form.text_field :title %>
+
+  <%= form.label :content %>
+  <%= form.text_area :content %>
+
+  <% if current_user.user? %>
+    <%= form.label :region, "Region (#{current_user.region})" %>
+    <%= form.hidden_field :region, value: current_user.region %>
+  <% else %>
+    <%= form.label :region %>
+    <%= form.text_field :region %>
+  <% end %>
+
+  <%= form.label :attachments %>
+  <%= file_field_tag "post[attachments][]" %>
+
+  <%= form.submit "Create Post" %>
+<% end %>

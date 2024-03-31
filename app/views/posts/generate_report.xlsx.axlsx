@@ -1,0 +1,14 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: 'Posts Report') do |sheet|
+  sheet.add_row ['Region', 'Content', 'Author', 'Image/File URL', 'Date/Time']
+
+  @posts.each do |post|
+    sheet.add_row [
+      post.region,
+      post.content,
+      post.user.name,
+      post.attachments.map(&:url).join(', '),
+      post.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    ]
+  end
+end

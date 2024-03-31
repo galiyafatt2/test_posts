@@ -1,0 +1,65 @@
+<% if current_user %>
+  <li><%= button_to "Sign out", destroy_user_session_path, method: :delete  %></li>
+<% else %>
+  <li><%= link_to "Sign up", new_user_registration_path %></li>
+<% end %>
+<%= link_to 'Download Report', generate_report_posts_path(format: :xlsx) %>
+
+<h1>Posts</h1>
+
+<%= form_tag(posts_path, method: :get) do %>
+  <div class="field">
+    <%= label_tag :region, "Region:" %>
+    <%= select_tag :region, options_for_select(['Region 1', 'Region 2', 'Region 3']), include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :author, "Author:" %>
+    <%= text_field_tag :author %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :start_date, "Start Date:" %>
+    <%= date_field_tag :start_date %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :end_date, "End Date:" %>
+    <%= date_field_tag :end_date %>
+  </div>
+
+  <%= submit_tag "Filter" %>
+<% end %>
+
+<% if current_user.admin? %>
+  <p>Welcome, <%= current_user.name %> (Admin)</p>
+  <p><%= link_to 'Assign Admin Role', new_admin_user_path %></p>
+<% else %>
+  <p>Welcome, <%= current_user.name %> (User)</p>
+<% end %>
+
+<% if current_user.admin? %>
+  <%= link_to 'New Post', new_post_path %>
+<% else %>
+  <%= link_to 'New Draft', new_post_path %>
+<% end %>
+
+<% if current_user.admin? %>
+  <% @posts.each do |post| %>
+    <% if post.pending? %>
+      <p><%= post.content %> - <strong>Pending</strong></p>
+      <%= button_to 'Approve', approve_post_path(post), method: :put %>
+      <%= button_to 'Reject', reject_post_path(post), method: :put %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% @posts.each do |post| %>
+    <% if post.draft? %>
+      <p><%= post.content %> - <strong>Draft</strong></p>
+      <%= button_to 'Edit', edit_post_path(post) %>
+      <%= button_to 'Delete', post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= button_to 'Submit for Review', submit_for_review_post_path(post), method: :put %>
+    <% end %>
+  <% end %>
+<% end %>
+

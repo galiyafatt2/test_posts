@@ -1,0 +1,12 @@
+<h1>Assign Admin Role</h1>
+
+<%= form_with(model: @user, url: assign_admin_role_admin_users_path, method: :patch) do |form| %>
+  <div class="field">
+    <%= form.label :user_id, "Select User" %>
+    <%= form.collection_select :user_id, User.all, :id, :email, prompt: "Select User" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Assign Admin Role" %>
+  </div>
+<% end %>
