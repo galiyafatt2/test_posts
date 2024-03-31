@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Чтобы посмотреть проект, сделать следующие шаги:
+1. git clone
+2. bundle install
+3. rails db:create db:migrate db:seed
+4. в другой вкладке - bundle exec sidekiq
+5. rails s
 
-Things you may want to cover:
+В seed можно посмотреть логин/пароль юзеров и админа
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Что было реализовано:
+1. Авторизация и аутентификация
+2. Состояния у модели Post
+3. Изменение состояний через фоновые задачи
+4. Фильтрация (частично)
+5. Разделение интерфейсов по ролям
+6. Возможность админам назанчать новых админов
